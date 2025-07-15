@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eUPxXWKEjtE=",
+  "dgSpecHash": "ymCG/Zvn+ms=",
   "success": true,
-  "projectFilePath": "C:\\Users\\faccenda_a\\Desktop\\RepoGit\\Template_Esame_Andrea_Faccenda\\Template_Esame_Andrea_Faccenda\\backend\\backend.csproj",
+  "projectFilePath": "C:\\Users\\faccenda_a\\Desktop\\RepoGit\\Esame_Andrea_Faccenda_ITS_2025\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\faccenda_a\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",
     "C:\\Users\\faccenda_a\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

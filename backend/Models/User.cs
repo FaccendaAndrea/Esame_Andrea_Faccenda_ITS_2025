@@ -10,5 +10,11 @@ namespace backend.Models
         public string Email { get; set; } = string.Empty;
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
+        [Required]
+        public string Nome { get; set; } = string.Empty;
+        [Required]
+        public string Cognome { get; set; } = string.Empty;
+        [Required]
+        public string Ruolo { get; set; } = string.Empty; // "Dipendente" o "Responsabile"
     }
 } 
