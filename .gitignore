@@ -1,0 +1,33 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# SQLite database
+*.db
+*.db-shm
+*.db-wal
+
+# Visual Studio Code
+.vscode/
+
+# Node.js (frontend)
+frontend/node_modules/
+frontend/dist/
+
+# Log files
+*.log
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Others
+backend/Migrations/
