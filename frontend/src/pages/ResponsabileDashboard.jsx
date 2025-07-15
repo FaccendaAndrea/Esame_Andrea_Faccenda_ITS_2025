@@ -52,6 +52,7 @@ export default function ResponsabileDashboard() {
   return (
     <div style={{minHeight:'100dvh',width:'100vw',height:'100dvh',background:'#f5f6fa',padding:0,margin:0,overflowX:'hidden'}}>
       <div style={{maxWidth:1300,minHeight:'100vh',margin:'0 auto',background:'#fff',borderRadius:0,boxShadow:'none',padding:'2.5em 2em',width:'100%',position:'relative'}}>
+        <Menu navigate={navigate} />
         <button onClick={handleLogout} style={{position:'absolute',top:24,right:32,background:'#d63031',color:'#fff',border:'none',borderRadius:6,padding:'0.6em 1.2em',fontWeight:600,fontSize:'1em',cursor:'pointer'}}>Logout</button>
         <h2 style={{fontWeight:700,color:'#111',marginBottom:8}}>Gestione richieste di acquisto</h2>
         {error && <div style={{background:'#ffeaea',color:'#d63031',borderRadius:6,padding:'0.7em 1em',marginBottom:16}}>{error}</div>}
@@ -85,6 +86,7 @@ export default function ResponsabileDashboard() {
                   <td style={{padding:'0.7em'}}>{r.stato}</td>
                   <td style={{padding:'0.7em'}}>{r.utente?.nome} {r.utente?.cognome}</td>
                   <td style={{padding:'0.7em',display:'flex',gap:8}}>
+                    <button onClick={()=>navigate(`/richieste/${r.richiestaId}`)} style={{background:'#636e72',color:'#fff',border:'none',borderRadius:6,padding:'0.4em 1em',fontWeight:500,cursor:'pointer'}}>Dettaglio</button>
                     {r.stato === 'In attesa' && <>
                       <button onClick={()=>handleAzione(r.richiestaId,'approva')} disabled={actionLoading===r.richiestaId+'approva'} style={{background:'#00b894',color:'#fff',border:'none',borderRadius:6,padding:'0.4em 1em',fontWeight:500,cursor:'pointer'}}>Approva</button>
                       <button onClick={()=>handleAzione(r.richiestaId,'rifiuta')} disabled={actionLoading===r.richiestaId+'rifiuta'} style={{background:'#d63031',color:'#fff',border:'none',borderRadius:6,padding:'0.4em 1em',fontWeight:500,cursor:'pointer'}}>Rifiuta</button>
@@ -97,5 +99,15 @@ export default function ResponsabileDashboard() {
         )}
       </div>
     </div>
+  );
+} 
+
+function Menu({ navigate }) {
+  return (
+    <nav style={{display:'flex',gap:24,alignItems:'center',marginBottom:32,borderBottom:'1px solid #eee',paddingBottom:12}}>
+      <button onClick={()=>navigate('/responsabile')} style={{background:'none',border:'none',color:'#0984e3',fontWeight:600,fontSize:'1.1em',cursor:'pointer'}}>Dashboard</button>
+      <button onClick={()=>navigate('/categorie')} style={{background:'none',border:'none',color:'#0984e3',fontWeight:600,fontSize:'1.1em',cursor:'pointer'}}>Categorie</button>
+      <button onClick={()=>navigate('/statistiche')} style={{background:'none',border:'none',color:'#0984e3',fontWeight:600,fontSize:'1.1em',cursor:'pointer'}}>Statistiche</button>
+    </nav>
   );
 } 

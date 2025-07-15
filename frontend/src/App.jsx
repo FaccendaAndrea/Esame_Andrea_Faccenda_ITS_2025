@@ -10,6 +10,8 @@ import Home from './pages/Home';
 import DipendenteDashboard from './pages/DipendenteDashboard';
 import RichiestaDetail from './pages/RichiestaDetail';
 import ResponsabileDashboard from './pages/ResponsabileDashboard';
+import GestioneCategorie from './pages/GestioneCategorie';
+import StatistichePage from './pages/StatistichePage';
 import { createContext, useState, useContext, useCallback } from 'react';
 
 const NotificationContext = createContext();
@@ -82,6 +84,16 @@ function App() {
           <Route path="/responsabile" element={
             <PrivateRoute>
               <ResponsabileDashboard />
+            </PrivateRoute>
+          } />
+          <Route path="/categorie" element={
+            <PrivateRoute>
+              <GestioneCategorie />
+            </PrivateRoute>
+          } />
+          <Route path="/statistiche" element={
+            <PrivateRoute>
+              <StatistichePage />
             </PrivateRoute>
           } />
           <Route path="/" element={<HomeRedirect />} />
