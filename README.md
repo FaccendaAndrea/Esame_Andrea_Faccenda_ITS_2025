@@ -1,37 +1,36 @@
-# Template Esame - Full Stack Web App
+# Esame ITS 2025 – Andrea Faccenda
 
-Questo progetto è un **template riutilizzabile** per applicazioni web full stack, pensato per essere una base solida e moderna per progetti futuri.
-
-## Caratteristiche principali
-
-- **Backend**: ASP.NET Core (C#), Entity Framework Core (SQLite), autenticazione JWT, API REST modulari
-- **Frontend**: React (Vite), pagine Login/Registrazione/Home, autenticazione client-side, routing protetto
-- **Sicurezza**: Password hashate (BCrypt), token JWT, CORS configurato
-- **Testing API**: Swagger UI integrato per testare le API direttamente dal browser
-- **Struttura**: Separazione chiara tra backend e frontend, facile da estendere
+Applicazione web full stack per la gestione delle richieste di acquisto, con autenticazione, dashboard dipendente/responsabile, statistiche e gestione categorie.
 
 ---
 
-## Come avviare il progetto
+## **Tecnologie**
+
+- **Backend:** ASP.NET Core (C#), Entity Framework Core (SQLite), autenticazione JWT, API REST
+- **Frontend:** React (Vite), autenticazione client-side, routing protetto, notifiche, filtri avanzati
+- **Sicurezza:** Password hashate (BCrypt), token JWT, CORS configurato
+
+---
+
+## **Avvio rapido**
 
 ### 1. Clona il repository
 
 ```sh
 git clone <url-repo>
-cd <nome-cartella-repo>
+cd Esame_Andrea_Faccenda_ITS_2025
 ```
 
 ### 2. Avvia il backend
 
 ```sh
 cd backend
-# (solo la prima volta) dotnet restore
-# (solo la prima volta) dotnet ef database update
-# Avvio del backend
- dotnet run
+dotnet restore
+dotnet ef database update   # solo la prima volta, se necessario
+dotnet run
 ```
-- Il backend partirà su una porta (es: `http://localhost:5161`).
-- Swagger UI sarà disponibile su `/swagger` (es: `http://localhost:5161/swagger`).
+- Il backend sarà su `http://localhost:5161`
+- Swagger UI: `http://localhost:5161/swagger`
 
 ### 3. Avvia il frontend
 
@@ -40,33 +39,53 @@ cd frontend
 npm install
 npm run dev
 ```
-- Il frontend sarà su `http://localhost:5173`.
-
-### 4. Testa l'applicazione
-- Registrati e fai login dal frontend.
-- Oppure testa le API da Swagger UI (`/swagger`).
+- Il frontend sarà su `http://localhost:5173`
 
 ---
 
-## Personalizzazione
-- Cambia le pagine React per aggiungere nuove funzionalità.
-- Aggiungi nuovi controller e modelli C# per estendere le API.
-- Modifica la stringa di connessione o la chiave JWT in `backend/appsettings.json`.
+## **Funzionalità principali**
+
+- Login/registrazione con ruoli (Dipendente/Responsabile)
+- Dashboard dipendente: crea, modifica, elimina richieste di acquisto
+- Dashboard responsabile: filtra, approva, rifiuta richieste, statistiche, gestione categorie
+- Notifiche (alert) per tutte le azioni importanti
+- Filtri avanzati e ricerca
+- UI moderna, responsive, accessibile
 
 ---
 
-## Struttura delle cartelle
+## **Struttura delle cartelle**
 
 ```
-/backend   # Progetto ASP.NET Core (API, DB, autenticazione)
-/frontend  # Progetto React (UI, autenticazione client, routing)
+/backend    # Progetto ASP.NET Core (API, DB, autenticazione)
+/frontend   # Progetto React (UI, autenticazione client, routing)
 ```
 
 ---
 
-## Note
-- Il database SQLite (`app.db`) e le migration non vengono committati (vedi `.gitignore`).
-- Per ambienti di produzione, ricordati di cambiare la chiave JWT e configurare HTTPS.
+## **Cosa NON includere nella zip**
+
+- `node_modules/` (frontend)
+- `frontend/dist/`, `frontend/.vite/`, `frontend/.eslintcache`
+- `backend/bin/`, `backend/obj/`
+- `.git/`, `.vscode/`, file temporanei o di log
+
+**Chi riceve la zip dovrà solo lanciare `npm install` e `dotnet restore` per ricreare tutto.**
+
+---
+
+## **Personalizzazione**
+
+- Modifica le pagine React in `frontend/src/pages/` per nuove funzionalità o stile
+- Aggiungi controller/modelli in `backend/Controllers/` e `backend/Models/`
+- Cambia la stringa di connessione o la chiave JWT in `backend/appsettings.json`
+
+---
+
+## **Note**
+
+- Il database SQLite (`app.db`) e le migration non vanno committati (vedi `.gitignore`)
+- Per produzione, cambia la chiave JWT e configura HTTPS
 
 ---
 
