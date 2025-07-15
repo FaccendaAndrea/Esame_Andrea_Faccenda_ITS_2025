@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import DipendenteDashboard from './pages/DipendenteDashboard';
+import RichiestaDetail from './pages/RichiestaDetail';
+import ResponsabileDashboard from './pages/ResponsabileDashboard';
 import { createContext, useState, useContext, useCallback } from 'react';
 
 const NotificationContext = createContext();
@@ -70,6 +72,16 @@ function App() {
           <Route path="/dipendente" element={
             <PrivateRoute>
               <DipendenteDashboard />
+            </PrivateRoute>
+          } />
+          <Route path="/richieste/:id" element={
+            <PrivateRoute>
+              <RichiestaDetail />
+            </PrivateRoute>
+          } />
+          <Route path="/responsabile" element={
+            <PrivateRoute>
+              <ResponsabileDashboard />
             </PrivateRoute>
           } />
           <Route path="/" element={<HomeRedirect />} />

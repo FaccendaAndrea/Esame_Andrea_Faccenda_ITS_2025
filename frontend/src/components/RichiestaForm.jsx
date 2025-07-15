@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-export default function RichiestaForm({ onSuccess, onCancel, richiesta }) {
+export default function RichiestaForm({ onSuccess, onCancel, richiesta, titolo }) {
   const [categorie, setCategorie] = useState([]);
   const [form, setForm] = useState({
-    categoriaId: richiesta?.categoriaId || '',
+    categoriaId: richiesta?.categoriaId || richiesta?.categoria?.categoriaId || '',
     oggetto: richiesta?.oggetto || '',
     quantita: richiesta?.quantita || 1,
     costoUnitario: richiesta?.costoUnitario || '',
@@ -60,7 +60,7 @@ export default function RichiestaForm({ onSuccess, onCancel, richiesta }) {
 
   return (
     <div style={{background:'#f9fafb',border:'1px solid #eee',borderRadius:10,padding:'1.5em',marginBottom:24}}>
-      <h3 style={{marginTop:0,marginBottom:18,color:'#111',fontWeight:600}}>{richiesta ? 'Modifica richiesta' : 'Nuova richiesta'}</h3>
+      <h3 style={{marginTop:0,marginBottom:18,color:'#111',fontWeight:600}}>{titolo || (richiesta ? 'Modifica richiesta' : 'Nuova richiesta')}</h3>
       {error && <div style={{background:'#ffeaea',color:'#d63031',borderRadius:6,padding:'0.7em 1em',marginBottom:12}}>{error}</div>}
       <form onSubmit={handleSubmit} style={{display:'flex',flexWrap:'wrap',gap:'1.5em 2em',alignItems:'flex-end',color:'#111'}}>
         <div style={{flex:'1 1 180px',display:'flex',flexDirection:'column',gap:4}}>

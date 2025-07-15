@@ -32,11 +32,15 @@ export default function RichiestaDetail() {
   if (error) return <div style={{padding:'2em',color:'#d63031'}}>{error}</div>;
   if (!richiesta) return null;
 
+  let bgColor = '#fff';
+  if (richiesta.stato === 'Rifiutata') bgColor = '#ffeaea';
+  else if (richiesta.stato === 'Approvata') bgColor = '#eafaf1';
+
   return (
-    <div style={{minHeight:'100dvh',background:'#f5f6fa',padding:'2em 0'}}>
-      <div style={{maxWidth:600,margin:'0 auto',background:'#fff',borderRadius:14,boxShadow:'0 2px 24px #0002',padding:'2.5em 2em'}}>
-        <h2 style={{fontWeight:700,color:'#2d3436',marginBottom:18}}>Dettaglio richiesta</h2>
-        <div style={{display:'flex',flexDirection:'column',gap:18}}>
+    <div style={{minHeight:'100dvh',width:'100vw',height:'100dvh',background:'#f5f6fa',padding:0,margin:0,overflowX:'hidden'}}>
+      <div style={{width:'100vw',height:'100dvh',background:bgColor,borderRadius:0,boxShadow:'none',padding:'2.5em 2em',margin:0,color:'#111',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+        <h2 style={{fontWeight:700,color:'#111',marginBottom:18}}>Dettaglio richiesta</h2>
+        <div style={{display:'flex',flexDirection:'column',gap:18,maxWidth:500,width:'100%'}}>
           <Info label="Data richiesta" value={new Date(richiesta.dataRichiesta).toLocaleDateString()} />
           <Info label="Categoria" value={richiesta.categoria?.descrizione} />
           <Info label="Oggetto" value={richiesta.oggetto} />
