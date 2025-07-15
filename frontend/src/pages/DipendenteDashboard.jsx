@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import RichiestaForm from '../components/RichiestaForm';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../App';
 
 export default function DipendenteDashboard() {
   const [richieste, setRichieste] = useState([]);
@@ -16,6 +17,7 @@ export default function DipendenteDashboard() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const notify = useNotification();
 
   async function fetchRichieste() {
     setLoading(true);
@@ -51,8 +53,10 @@ export default function DipendenteDashboard() {
       });
       if (!res.ok) throw new Error('Impossibile eliminare la richiesta');
       fetchRichieste();
+      notify('Richiesta eliminata con successo!', 'success');
     } catch (e) {
       setError(e.message);
+      notify(e.message, 'error');
     }
   };
 
@@ -70,6 +74,18 @@ export default function DipendenteDashboard() {
         </div>
         <button onClick={handleLogout} style={{position:'absolute',top:24,right:32,background:'#d63031',color:'#fff',border:'none',borderRadius:6,padding:'0.6em 1.2em',fontWeight:600,fontSize:'1em',cursor:'pointer'}}>Logout</button>
         <h2 style={{fontWeight:700,color:'#111',marginBottom:8}}>Le tue richieste di acquisto</h2>
+        <button
+          onClick={()=>{setShowForm(true);setEditing(null);}}
+          style={{padding:'0.7em 1.5em',borderRadius:6,border:'none',background:'#0984e3',color:'#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1em',marginBottom:18}}
+        >+ Nuova richiesta</button>
+        {showForm && (
+          <RichiestaForm 
+            onSuccess={()=>{setShowForm(false);setEditing(null);fetchRichieste();}} 
+            onCancel={()=>{setShowForm(false);setEditing(null);}} 
+            richiesta={editing} 
+            titolo={editing ? `Modifica richiesta: ${editing.oggetto}` : undefined}
+          />
+        )}
         <div style={{display:'flex',gap:16,marginBottom:18}}>
           <input
             type="text"
@@ -103,14 +119,6 @@ export default function DipendenteDashboard() {
             style={{padding:'0.7em 1.5em',borderRadius:6,border:'none',background:'#b2bec3',color:'#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1em'}}
           >Reset</button>
         </div>
-        {showForm && (
-          <RichiestaForm 
-            onSuccess={()=>{setShowForm(false);setEditing(null);fetchRichieste();}} 
-            onCancel={()=>{setShowForm(false);setEditing(null);}} 
-            richiesta={editing} 
-            titolo={editing ? `Modifica richiesta: ${editing.oggetto}` : undefined}
-          />
-        )}
         {error && <div style={{background:'#ffeaea',color:'#d63031',borderRadius:6,padding:'0.7em 1em',marginBottom:16}}>{error}</div>}
         {loading ? <div>Caricamento...</div> : (
           <table style={{width:'100%',borderCollapse:'collapse',marginTop:8,color:'#111'}}>

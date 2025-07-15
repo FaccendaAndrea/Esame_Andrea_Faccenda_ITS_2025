@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useNotification } from '../App';
 
 export default function ResponsabileDashboard() {
   const [richieste, setRichieste] = useState([]);
@@ -14,6 +15,7 @@ export default function ResponsabileDashboard() {
   const [filtroStato, setFiltroStato] = useState('');
   const [filtroDipendente, setFiltroDipendente] = useState('');
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const notify = useNotification();
 
   async function fetchRichieste() {
     setLoading(true);
@@ -55,8 +57,10 @@ export default function ResponsabileDashboard() {
       });
       if (!res.ok) throw new Error('Errore nell\'operazione');
       fetchRichieste();
+      notify(tipo === 'approva' ? 'Richiesta approvata!' : 'Richiesta rifiutata!', tipo === 'approva' ? 'success' : 'error');
     } catch (e) {
       setError(e.message);
+      notify(e.message, 'error');
     } finally {
       setActionLoading(null);
     }

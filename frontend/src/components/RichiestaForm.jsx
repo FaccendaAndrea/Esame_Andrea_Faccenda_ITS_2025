@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNotification } from '../App';
 
 export default function RichiestaForm({ onSuccess, onCancel, richiesta, titolo }) {
   const [categorie, setCategorie] = useState([]);
@@ -12,6 +13,7 @@ export default function RichiestaForm({ onSuccess, onCancel, richiesta, titolo }
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
+  const notify = useNotification();
 
   useEffect(() => {
     fetch('http://localhost:5161/api/categorie')
@@ -28,6 +30,7 @@ export default function RichiestaForm({ onSuccess, onCancel, richiesta, titolo }
     setError(null);
     if (!form.categoriaId || !form.oggetto || !form.quantita || !form.costoUnitario) {
       setError('Tutti i campi obbligatori vanno compilati');
+      notify('Tutti i campi obbligatori vanno compilati', 'error');
       return;
     }
     setLoading(true);
@@ -48,11 +51,14 @@ export default function RichiestaForm({ onSuccess, onCancel, richiesta, titolo }
       });
       if (!res.ok) {
         const data = await res.json();
+        notify(data.message || 'Errore salvataggio richiesta', 'error');
         throw new Error(data.message || 'Errore salvataggio richiesta');
       }
+      notify(richiesta ? 'Richiesta modificata con successo!' : 'Richiesta creata con successo!', 'success');
       onSuccess && onSuccess();
     } catch (e) {
       setError(e.message);
+      notify(e.message, 'error');
     } finally {
       setLoading(false);
     }

@@ -85,13 +85,38 @@ export default function GestioneCategorie() {
         <Menu navigate={navigate} />
         <h2 style={{fontWeight:700,color:'#111',marginBottom:8}}>Gestione categorie</h2>
         {error && <div style={{background:'#ffeaea',color:'#d63031',borderRadius:6,padding:'0.7em 1em',marginBottom:16}}>{error}</div>}
-        <form onSubmit={handleSubmit} style={{display:'flex',gap:12,marginBottom:24,alignItems:'flex-end'}}>
+        {editing && (
+          <div style={{
+            display:'flex',alignItems:'center',gap:8,marginBottom:8,
+            background:'#fffde7',
+            border:'1px solid #ffe082',
+            borderRadius:6,
+            padding:'0.5em 0.9em',
+            fontWeight:500,
+            color:'#bfa100',
+            fontSize:'1em',
+          }}>
+            <span style={{fontSize:'1.1em'}}>✏️</span>
+            <span>Stai modificando la categoria <b>{editing.descrizione}</b></span>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} style={{
+          display:'flex',gap:12,marginBottom:24,alignItems:'flex-end',
+          background: editing ? '#fffde7' : 'transparent',
+          border: editing ? '1px solid #ffe082' : 'none',
+          borderRadius: editing ? 8 : 0,
+          boxShadow: editing ? '0 1px 4px #ffe08233' : 'none',
+          transition:'all 0.2s',
+          padding: editing ? '1.2em 1.5em 1.2em 1.5em' : '0.2em 0', // padding più ampio in modifica
+        }}>
           <div style={{flex:1,display:'flex',flexDirection:'column',gap:4}}>
-            <label style={{fontWeight:500,marginBottom:2,color:'#111'}}>Descrizione categoria</label>
+            <label style={{fontWeight:500,marginBottom:2,color:'#111',display:'flex',alignItems:'center',gap:8}}>
+              {editing ? <><span>Modifica categoria</span> <span style={{background:'#ffe082',color:'#bfa100',borderRadius:4,padding:'0.1em 0.6em',fontSize:'0.85em',fontWeight:700,letterSpacing:'0.5px'}}>MODIFICA</span></> : 'Descrizione categoria'}
+            </label>
             <input value={descrizione} onChange={e=>setDescrizione(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3'}} />
           </div>
-          <button type="submit" style={{padding:'0.7em 1.5em',borderRadius:6,border:'none',background:'#0984e3',color:'#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1em'}}>{editing ? 'Salva' : 'Aggiungi'}</button>
-          {editing && <button type="button" onClick={()=>{setEditing(null);setDescrizione('');}} style={{padding:'0.7em 1.5em',borderRadius:6,border:'none',background:'#b2bec3',color:'#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1em'}}>Annulla</button>}
+          <button type="submit" style={{padding:'0.7em 1.5em',borderRadius:6,border:'none',background: editing ? '#ffe082' : '#0984e3',color: editing ? '#222' : '#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1em',transition:'all 0.2s'}}>{editing ? 'Salva' : 'Aggiungi'}</button>
+          {editing && <button type="button" onClick={()=>{setEditing(null);setDescrizione('');}} style={{padding:'0.7em 1.5em',borderRadius:6,border:'1px solid #ffe082',background:'#fff',color:'#bfa100',fontWeight:'bold',cursor:'pointer',fontSize:'1em',transition:'all 0.2s'}}>Annulla</button>}
         </form>
         {loading ? <div>Caricamento...</div> : (
           <table style={{width:'100%',borderCollapse:'collapse',marginTop:8,color:'#111'}}>
@@ -117,6 +142,7 @@ export default function GestioneCategorie() {
           </table>
         )}
       </div>
+      <style>{`@keyframes editing-blink { 0%{box-shadow:0 2px 12px #f9ca2433;} 100%{box-shadow:0 2px 24px #f9ca2477;} }`}</style>
     </div>
   );
 }
