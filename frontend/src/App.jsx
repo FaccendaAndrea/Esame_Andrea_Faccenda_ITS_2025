@@ -7,6 +7,7 @@ import {
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
+import DipendenteDashboard from './pages/DipendenteDashboard';
 import { createContext, useState, useContext, useCallback } from 'react';
 
 const NotificationContext = createContext();
@@ -66,15 +67,24 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={
+          <Route path="/dipendente" element={
             <PrivateRoute>
-              <Home />
+              <DipendenteDashboard />
             </PrivateRoute>
           } />
+          <Route path="/" element={<HomeRedirect />} />
         </Routes>
       </Router>
     </NotificationProvider>
   );
+}
+
+function HomeRedirect() {
+  // Scegli la dashboard in base al ruolo
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  if (user.ruolo === 'Responsabile') return <Navigate to="/responsabile" />;
+  if (user.ruolo === 'Dipendente') return <Navigate to="/dipendente" />;
+  return <Navigate to="/login" />;
 }
 
 export default App;

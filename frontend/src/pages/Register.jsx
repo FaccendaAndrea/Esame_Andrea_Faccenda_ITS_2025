@@ -67,27 +67,27 @@ export default function Register() {
           )}
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="nome" style={{fontWeight:500,marginBottom:2}}>Nome</label>
-            <input id="nome" type="text" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}} />
+            <input id="nome" type="text" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="cognome" style={{fontWeight:500,marginBottom:2}}>Cognome</label>
-            <input id="cognome" type="text" placeholder="Cognome" value={cognome} onChange={e => setCognome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}} />
+            <input id="cognome" type="text" placeholder="Cognome" value={cognome} onChange={e => setCognome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="email" style={{fontWeight:500,marginBottom:2}}>Email</label>
-            <input id="email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}} autoFocus />
+            <input id="email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} autoFocus />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="password" style={{fontWeight:500,marginBottom:2}}>Password</label>
-            <input id="password" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}} />
+            <input id="password" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="password2" style={{fontWeight:500,marginBottom:2}}>Conferma password</label>
-            <input id="password2" type="password" placeholder="Ripeti password" value={password2} onChange={e => setPassword2(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}} />
+            <input id="password2" type="password" placeholder="Ripeti password" value={password2} onChange={e => setPassword2(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="ruolo" style={{fontWeight:500,marginBottom:2}}>Ruolo</label>
-            <select id="ruolo" value={ruolo} onChange={e => setRuolo(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}}>
+            <select id="ruolo" value={ruolo} onChange={e => setRuolo(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}}>
               <option value="Dipendente">Dipendente</option>
               <option value="Responsabile">Responsabile</option>
             </select>

@@ -21,7 +21,9 @@ export default function Login() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         notify('Login effettuato con successo!', 'success');
-        navigate('/');
+        if (data.user.ruolo === 'Responsabile') navigate('/responsabile');
+        else if (data.user.ruolo === 'Dipendente') navigate('/dipendente');
+        else navigate('/');
       } else {
         notify(data.message || 'Login fallito', 'error');
       }
@@ -39,11 +41,11 @@ export default function Login() {
         <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:'1.2em',width:'100%'}} autoComplete="on">
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="email" style={{fontWeight:500,marginBottom:2}}>Email</label>
-            <input id="email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}} autoFocus />
+            <input id="email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} autoFocus />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="password" style={{fontWeight:500,marginBottom:2}}>Password</label>
-            <input id="password" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3'}} />
+            <input id="password" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
           </div>
           <button type="submit" style={{padding:'0.7em',borderRadius:6,border:'none',background:'#0984e3',color:'#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1.1em',marginTop:8}}>Login</button>
         </form>
