@@ -64,6 +64,14 @@ function PrivateRoute({ children }) {
   return token ? children : <Navigate to="/login" />;
 }
 
+function RoleRoute({ children, ruolo }) {
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  if (!token) return <Navigate to="/login" />;
+  if (user.ruolo !== ruolo) return <div style={{padding:'2em',color:'#d63031',fontWeight:700,fontSize:'1.2em',textAlign:'center'}}>Accesso negato: non hai i permessi per questa pagina.</div>;
+  return children;
+}
+
 function App() {
   return (
     <NotificationProvider>
@@ -72,9 +80,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dipendente" element={
-            <PrivateRoute>
+            <RoleRoute ruolo="Dipendente">
               <DipendenteDashboard />
-            </PrivateRoute>
+            </RoleRoute>
           } />
           <Route path="/richieste/:id" element={
             <PrivateRoute>
@@ -82,19 +90,19 @@ function App() {
             </PrivateRoute>
           } />
           <Route path="/responsabile" element={
-            <PrivateRoute>
+            <RoleRoute ruolo="Responsabile">
               <ResponsabileDashboard />
-            </PrivateRoute>
+            </RoleRoute>
           } />
           <Route path="/categorie" element={
-            <PrivateRoute>
+            <RoleRoute ruolo="Responsabile">
               <GestioneCategorie />
-            </PrivateRoute>
+            </RoleRoute>
           } />
           <Route path="/statistiche" element={
-            <PrivateRoute>
+            <RoleRoute ruolo="Responsabile">
               <StatistichePage />
-            </PrivateRoute>
+            </RoleRoute>
           } />
           <Route path="/" element={<HomeRedirect />} />
         </Routes>
