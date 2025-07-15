@@ -8,6 +8,10 @@ export default function DipendenteDashboard() {
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState(null);
+  const [categorie, setCategorie] = useState([]);
+  const [filtroOggetto, setFiltroOggetto] = useState('');
+  const [filtroCategoria, setFiltroCategoria] = useState('');
+  const [filtroStato, setFiltroStato] = useState('');
 
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
@@ -28,7 +32,14 @@ export default function DipendenteDashboard() {
     }
   }
 
-  useEffect(() => { fetchRichieste(); }, []);
+  useEffect(() => {
+    fetchRichieste();
+    fetch('http://localhost:5161/api/categorie', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+      .then(r => r.json())
+      .then(setCategorie);
+  }, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Sei sicuro di voler eliminare questa richiesta?')) return;
@@ -55,7 +66,39 @@ export default function DipendenteDashboard() {
       <div style={{maxWidth:1200,minHeight:'100vh',margin:'0 auto',background:'#fff',borderRadius:0,boxShadow:'none',padding:'2.5em 2em',width:'100%',position:'relative'}}>
         <button onClick={handleLogout} style={{position:'absolute',top:24,right:32,background:'#d63031',color:'#fff',border:'none',borderRadius:6,padding:'0.6em 1.2em',fontWeight:600,fontSize:'1em',cursor:'pointer'}}>Logout</button>
         <h2 style={{fontWeight:700,color:'#111',marginBottom:8}}>Le tue richieste di acquisto</h2>
-        <button onClick={()=>{setEditing(null);setShowForm(true);}} style={{background:'#0984e3',color:'#fff',border:'none',borderRadius:6,padding:'0.7em 1.5em',fontWeight:600,fontSize:'1em',marginBottom:24,cursor:'pointer'}}>Nuova richiesta</button>
+        <div style={{display:'flex',gap:16,marginBottom:18}}>
+          <input
+            type="text"
+            placeholder="Cerca per oggetto..."
+            value={filtroOggetto}
+            onChange={e => setFiltroOggetto(e.target.value)}
+            style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3',minWidth:180}}
+          />
+          <select
+            value={filtroCategoria}
+            onChange={e => setFiltroCategoria(e.target.value)}
+            style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3'}}
+          >
+            <option value="">Tutte le categorie</option>
+            {categorie.map(c => (
+              <option key={c.categoriaId} value={c.categoriaId}>{c.descrizione}</option>
+            ))}
+          </select>
+          <select
+            value={filtroStato}
+            onChange={e => setFiltroStato(e.target.value)}
+            style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3'}}
+          >
+            <option value="">Tutti gli stati</option>
+            <option value="In attesa">In attesa</option>
+            <option value="Approvata">Approvata</option>
+            <option value="Rifiutata">Rifiutata</option>
+          </select>
+          <button
+            onClick={()=>{setFiltroOggetto('');setFiltroCategoria('');setFiltroStato('');}}
+            style={{padding:'0.7em 1.5em',borderRadius:6,border:'none',background:'#b2bec3',color:'#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1em'}}
+          >Reset</button>
+        </div>
         {showForm && (
           <RichiestaForm 
             onSuccess={()=>{setShowForm(false);setEditing(null);fetchRichieste();}} 
@@ -79,7 +122,13 @@ export default function DipendenteDashboard() {
               </tr>
             </thead>
             <tbody>
-              {richieste.map(r => (
+              {richieste
+                .filter(r =>
+                  (!filtroOggetto || r.oggetto.toLowerCase().includes(filtroOggetto.toLowerCase())) &&
+                  (!filtroCategoria || String(r.categoria?.categoriaId) === filtroCategoria) &&
+                  (!filtroStato || r.stato === filtroStato)
+                )
+                .map(r => (
                 <tr key={r.richiestaId} 
                   style={{
                     borderBottom:'1px solid #eee',

@@ -8,6 +8,11 @@ export default function ResponsabileDashboard() {
   const [actionLoading, setActionLoading] = useState(null);
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  const [categorie, setCategorie] = useState([]);
+  const [filtroOggetto, setFiltroOggetto] = useState('');
+  const [filtroCategoria, setFiltroCategoria] = useState('');
+  const [filtroStato, setFiltroStato] = useState('');
+  const [filtroDipendente, setFiltroDipendente] = useState('');
 
   async function fetchRichieste() {
     setLoading(true);
@@ -25,7 +30,14 @@ export default function ResponsabileDashboard() {
     }
   }
 
-  useEffect(() => { fetchRichieste(); }, []);
+  useEffect(() => {
+    fetchRichieste();
+    fetch('http://localhost:5161/api/categorie', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+      .then(r => r.json())
+      .then(setCategorie);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -55,6 +67,46 @@ export default function ResponsabileDashboard() {
         <Menu navigate={navigate} />
         <button onClick={handleLogout} style={{position:'absolute',top:24,right:32,background:'#d63031',color:'#fff',border:'none',borderRadius:6,padding:'0.6em 1.2em',fontWeight:600,fontSize:'1em',cursor:'pointer'}}>Logout</button>
         <h2 style={{fontWeight:700,color:'#111',marginBottom:8}}>Gestione richieste di acquisto</h2>
+        <div style={{display:'flex',gap:16,marginBottom:18}}>
+          <input
+            type="text"
+            placeholder="Cerca per oggetto..."
+            value={filtroOggetto}
+            onChange={e => setFiltroOggetto(e.target.value)}
+            style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3',minWidth:180}}
+          />
+          <select
+            value={filtroCategoria}
+            onChange={e => setFiltroCategoria(e.target.value)}
+            style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3'}}
+          >
+            <option value="">Tutte le categorie</option>
+            {categorie.map(c => (
+              <option key={c.categoriaId} value={c.categoriaId}>{c.descrizione}</option>
+            ))}
+          </select>
+          <select
+            value={filtroStato}
+            onChange={e => setFiltroStato(e.target.value)}
+            style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3'}}
+          >
+            <option value="">Tutti gli stati</option>
+            <option value="In attesa">In attesa</option>
+            <option value="Approvata">Approvata</option>
+            <option value="Rifiutata">Rifiutata</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Cerca dipendente..."
+            value={filtroDipendente}
+            onChange={e => setFiltroDipendente(e.target.value)}
+            style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',background:'#fff',color:'#222',outlineColor:'#0984e3',minWidth:180}}
+          />
+          <button
+            onClick={()=>{setFiltroOggetto('');setFiltroCategoria('');setFiltroStato('');setFiltroDipendente('');}}
+            style={{padding:'0.7em 1.5em',borderRadius:6,border:'none',background:'#b2bec3',color:'#fff',fontWeight:'bold',cursor:'pointer',fontSize:'1em'}}
+          >Reset</button>
+        </div>
         {error && <div style={{background:'#ffeaea',color:'#d63031',borderRadius:6,padding:'0.7em 1em',marginBottom:16}}>{error}</div>}
         {loading ? <div>Caricamento...</div> : (
           <table style={{width:'100%',borderCollapse:'collapse',marginTop:8,color:'#111'}}>
@@ -71,7 +123,14 @@ export default function ResponsabileDashboard() {
               </tr>
             </thead>
             <tbody>
-              {richieste.map(r => (
+              {richieste
+                .filter(r =>
+                  (!filtroOggetto || r.oggetto.toLowerCase().includes(filtroOggetto.toLowerCase())) &&
+                  (!filtroCategoria || String(r.categoria?.categoriaId) === filtroCategoria) &&
+                  (!filtroStato || r.stato === filtroStato) &&
+                  (!filtroDipendente || ((r.utente?.nome + ' ' + r.utente?.cognome).toLowerCase().includes(filtroDipendente.toLowerCase())))
+                )
+                .map(r => (
                 <tr key={r.richiestaId} 
                   style={{
                     borderBottom:'1px solid #eee',
