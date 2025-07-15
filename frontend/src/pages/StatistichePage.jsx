@@ -44,6 +44,7 @@ export default function StatistichePage() {
   return (
     <div style={{minHeight:'100dvh',width:'100vw',height:'100dvh',background:'#f5f6fa',padding:0,margin:0,overflowX:'hidden'}}>
       <div style={{maxWidth:1300,minHeight:'100vh',margin:'0 auto',background:'#fff',borderRadius:0,boxShadow:'none',padding:'2.5em 2em',width:'100%',position:'relative'}}>
+        <div style={{fontWeight:800,fontSize:'2.2em',color:'#222',marginBottom:18}}>Area statistiche</div>
         <Menu navigate={navigate} />
         <h2 style={{fontWeight:700,color:'#111',marginBottom:8}}>Statistiche richieste di acquisto</h2>
         <div style={{display:'flex',gap:16,marginBottom:24}}>
