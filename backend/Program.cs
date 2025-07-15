@@ -124,6 +124,137 @@ app.Use(async (context, next) =>
     }
 });
 
+void SeedDatabase(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    if (!db.Users.Any())
+    {
+        // Utenti
+        db.Users.AddRange(
+            new backend.Models.User
+            {
+                Email = "boss@azienda.it",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Password123!"),
+                Nome = "Mario",
+                Cognome = "Rossi",
+                Ruolo = "Responsabile"
+            },
+            new backend.Models.User
+            {
+                Email = "anna.dip@azienda.it",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Password123!"),
+                Nome = "Anna",
+                Cognome = "Bianchi",
+                Ruolo = "Dipendente"
+            },
+            new backend.Models.User
+            {
+                Email = "luca.dip@azienda.it",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Password123!"),
+                Nome = "Luca",
+                Cognome = "Verdi",
+                Ruolo = "Dipendente"
+            }
+        );
+        db.SaveChanges();
+
+        // Categorie
+        db.CategorieAcquisto.AddRange(
+            new backend.Models.CategoriaAcquisto { Descrizione = "Informatica" },
+            new backend.Models.CategoriaAcquisto { Descrizione = "Cancelleria" },
+            new backend.Models.CategoriaAcquisto { Descrizione = "Arredamento" },
+            new backend.Models.CategoriaAcquisto { Descrizione = "Servizi" }
+        );
+        db.SaveChanges();
+
+        // Recupero oggetti con Id
+        var responsabile = db.Users.First(u => u.Ruolo == "Responsabile");
+        var dip1 = db.Users.First(u => u.Email == "anna.dip@azienda.it");
+        var dip2 = db.Users.First(u => u.Email == "luca.dip@azienda.it");
+        var cat1 = db.CategorieAcquisto.First(c => c.Descrizione == "Informatica");
+        var cat2 = db.CategorieAcquisto.First(c => c.Descrizione == "Cancelleria");
+        var cat3 = db.CategorieAcquisto.First(c => c.Descrizione == "Arredamento");
+        var cat4 = db.CategorieAcquisto.First(c => c.Descrizione == "Servizi");
+
+        // Richieste di acquisto
+        var richieste = new List<backend.Models.RichiestaAcquisto>
+        {
+            new backend.Models.RichiestaAcquisto {
+                DataRichiesta = DateTime.UtcNow.AddMonths(-2),
+                CategoriaId = cat1.CategoriaId,
+                Oggetto = "Notebook Lenovo ThinkPad",
+                Quantita = 2,
+                CostoUnitario = 1200,
+                Motivazione = "Sostituzione vecchi PC",
+                Stato = "Approvata",
+                UtenteId = dip1.Id,
+                DataApprovazione = DateTime.UtcNow.AddMonths(-2).AddDays(2),
+                UtenteApprovazioneId = responsabile.Id
+            },
+            new backend.Models.RichiestaAcquisto {
+                DataRichiesta = DateTime.UtcNow.AddMonths(-1),
+                CategoriaId = cat2.CategoriaId,
+                Oggetto = "Blocchi appunti A4",
+                Quantita = 50,
+                CostoUnitario = 1.5m,
+                Motivazione = "Rifornimento magazzino",
+                Stato = "Approvata",
+                UtenteId = dip2.Id,
+                DataApprovazione = DateTime.UtcNow.AddMonths(-1).AddDays(1),
+                UtenteApprovazioneId = responsabile.Id
+            },
+            new backend.Models.RichiestaAcquisto {
+                DataRichiesta = DateTime.UtcNow.AddDays(-20),
+                CategoriaId = cat3.CategoriaId,
+                Oggetto = "Sedia ergonomica",
+                Quantita = 5,
+                CostoUnitario = 180,
+                Motivazione = "Nuovi arrivi in ufficio",
+                Stato = "Rifiutata",
+                UtenteId = dip1.Id,
+                DataApprovazione = DateTime.UtcNow.AddDays(-18),
+                UtenteApprovazioneId = responsabile.Id
+            },
+            new backend.Models.RichiestaAcquisto {
+                DataRichiesta = DateTime.UtcNow.AddDays(-10),
+                CategoriaId = cat4.CategoriaId,
+                Oggetto = "Servizio pulizie straordinario",
+                Quantita = 1,
+                CostoUnitario = 350,
+                Motivazione = "Evento aziendale",
+                Stato = "In attesa",
+                UtenteId = dip2.Id
+            },
+            new backend.Models.RichiestaAcquisto {
+                DataRichiesta = DateTime.UtcNow.AddDays(-5),
+                CategoriaId = cat1.CategoriaId,
+                Oggetto = "Monitor 27 pollici",
+                Quantita = 3,
+                CostoUnitario = 250,
+                Motivazione = "Upgrade postazioni",
+                Stato = "In attesa",
+                UtenteId = dip1.Id
+            },
+            new backend.Models.RichiestaAcquisto {
+                DataRichiesta = DateTime.UtcNow.AddDays(-3),
+                CategoriaId = cat2.CategoriaId,
+                Oggetto = "Penna a sfera blu",
+                Quantita = 100,
+                CostoUnitario = 0.8m,
+                Motivazione = "Uso quotidiano",
+                Stato = "In attesa",
+                UtenteId = dip2.Id
+            }
+        };
+        db.RichiesteAcquisto.AddRange(richieste);
+        db.SaveChanges();
+    }
+}
+
+// Chiamo il seed all'avvio
+SeedDatabase(app);
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
