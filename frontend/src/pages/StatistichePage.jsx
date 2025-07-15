@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function StatistichePage() {
   const [stats, setStats] = useState([]);
@@ -43,7 +43,7 @@ export default function StatistichePage() {
 
   return (
     <div style={{minHeight:'100dvh',width:'100vw',height:'100dvh',background:'#f5f6fa',padding:0,margin:0,overflowX:'hidden'}}>
-      <div style={{maxWidth:1100,minHeight:'100vh',margin:'0 auto',background:'#fff',borderRadius:0,boxShadow:'none',padding:'2.5em 2em',width:'100%',position:'relative'}}>
+      <div style={{maxWidth:1300,minHeight:'100vh',margin:'0 auto',background:'#fff',borderRadius:0,boxShadow:'none',padding:'2.5em 2em',width:'100%',position:'relative'}}>
         <Menu navigate={navigate} />
         <h2 style={{fontWeight:700,color:'#111',marginBottom:8}}>Statistiche richieste di acquisto</h2>
         <div style={{display:'flex',gap:16,marginBottom:24}}>
@@ -94,11 +94,33 @@ export default function StatistichePage() {
 }
 
 function Menu({ navigate }) {
+  const location = useLocation();
   return (
     <nav style={{display:'flex',gap:24,alignItems:'center',marginBottom:32,borderBottom:'1px solid #eee',paddingBottom:12}}>
-      <button onClick={()=>navigate('/responsabile')} style={{background:'none',border:'none',color:'#0984e3',fontWeight:600,fontSize:'1.1em',cursor:'pointer'}}>Dashboard</button>
-      <button onClick={()=>navigate('/categorie')} style={{background:'none',border:'none',color:'#0984e3',fontWeight:600,fontSize:'1.1em',cursor:'pointer'}}>Categorie</button>
-      <button onClick={()=>navigate('/statistiche')} style={{background:'none',border:'none',color:'#0984e3',fontWeight:600,fontSize:'1.1em',cursor:'pointer'}}>Statistiche</button>
+      <button
+        onClick={()=>navigate('/responsabile')}
+        style={{
+          background: location.pathname === '/responsabile' ? '#0984e3' : 'none',
+          color: location.pathname === '/responsabile' ? '#fff' : '#0984e3',
+          border:'none',fontWeight:600,fontSize:'1.1em',cursor:'pointer',borderRadius:6,padding:'0.4em 1.2em',transition:'background 0.2s,color 0.2s'
+        }}
+      >Dashboard</button>
+      <button
+        onClick={()=>navigate('/categorie')}
+        style={{
+          background: location.pathname === '/categorie' ? '#0984e3' : 'none',
+          color: location.pathname === '/categorie' ? '#fff' : '#0984e3',
+          border:'none',fontWeight:600,fontSize:'1.1em',cursor:'pointer',borderRadius:6,padding:'0.4em 1.2em',transition:'background 0.2s,color 0.2s'
+        }}
+      >Categorie</button>
+      <button
+        onClick={()=>navigate('/statistiche')}
+        style={{
+          background: location.pathname === '/statistiche' ? '#0984e3' : 'none',
+          color: location.pathname === '/statistiche' ? '#fff' : '#0984e3',
+          border:'none',fontWeight:600,fontSize:'1.1em',cursor:'pointer',borderRadius:6,padding:'0.4em 1.2em',transition:'background 0.2s,color 0.2s'
+        }}
+      >Statistiche</button>
     </nav>
   );
 } 
