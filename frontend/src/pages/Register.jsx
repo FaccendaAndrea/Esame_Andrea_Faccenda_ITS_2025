@@ -10,6 +10,8 @@ export default function Register() {
   const [cognome, setCognome] = useState('');
   const [ruolo, setRuolo] = useState('Dipendente');
   const [errors, setErrors] = useState([]);
+  const [passwordErrors, setPasswordErrors] = useState([]);
+  const [password2Error, setPassword2Error] = useState('');
   const navigate = useNavigate();
   const notify = useNotification();
 
@@ -22,6 +24,18 @@ export default function Register() {
     if (!/[^A-Za-z0-9]/.test(pw)) errors.push('Almeno un carattere speciale');
     return errors;
   }
+
+  const handlePasswordChange = (pw) => {
+    setPassword(pw);
+    setPasswordErrors(validatePassword(pw));
+    if (password2 && pw !== password2) setPassword2Error('Le password non coincidono');
+    else setPassword2Error('');
+  };
+  const handlePassword2Change = (pw2) => {
+    setPassword2(pw2);
+    if (password && pw2 !== password) setPassword2Error('Le password non coincidono');
+    else setPassword2Error('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +73,7 @@ export default function Register() {
         <p style={{textAlign:'center',marginBottom:'1.5em',color:'#636e72',fontSize:'1em'}}>Compila i campi per registrarti</p>
         <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:'1.2em',width:'100%'}} autoComplete="on">
           {errors.length > 0 && (
-            <div style={{background:'#ffeaea',color:'#d63031',borderRadius:6,padding:'0.7em 1em',marginBottom:8,fontSize:'0.98em',boxShadow:'0 1px 4px #0001'}}>
+            <div style={{background:'none',color:'#d63031',borderRadius:6,padding:'0.7em 1em',marginBottom:8,fontSize:'0.98em',fontWeight:500}}>
               <ul style={{margin:0,paddingLeft:18}}>
                 {errors.map((err,i) => <li key={i}>{err}</li>)}
               </ul>
@@ -67,23 +81,31 @@ export default function Register() {
           )}
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="nome" style={{fontWeight:500,marginBottom:2}}>Nome</label>
-            <input id="nome" type="text" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
+            <input id="nome" type="text" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outline:'none',background:'#fff',color:'#222'}} onFocus={e=>e.target.style.border='1px solid #0984e3'} onBlur={e=>e.target.style.border='1px solid #dfe6e9'} />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="cognome" style={{fontWeight:500,marginBottom:2}}>Cognome</label>
-            <input id="cognome" type="text" placeholder="Cognome" value={cognome} onChange={e => setCognome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
+            <input id="cognome" type="text" placeholder="Cognome" value={cognome} onChange={e => setCognome(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outline:'none',background:'#fff',color:'#222'}} onFocus={e=>e.target.style.border='1px solid #0984e3'} onBlur={e=>e.target.style.border='1px solid #dfe6e9'} />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="email" style={{fontWeight:500,marginBottom:2}}>Email</label>
-            <input id="email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} autoFocus />
+            <input id="email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outline:'none',background:'#fff',color:'#222'}} autoFocus onFocus={e=>e.target.style.border='1px solid #0984e3'} onBlur={e=>e.target.style.border='1px solid #dfe6e9'} />
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="password" style={{fontWeight:500,marginBottom:2}}>Password</label>
-            <input id="password" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
+            <input id="password" type="password" placeholder="Password" value={password} onChange={e => handlePasswordChange(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outline:'none',background:'#fff',color:'#222'}} onFocus={e=>e.target.style.border='1px solid #0984e3'} onBlur={e=>e.target.style.border='1px solid #dfe6e9'} />
+            {password && passwordErrors.length > 0 && (
+              <ul style={{color:'#d63031',margin:'6px 0 0 0',paddingLeft:18,fontSize:'0.98em',fontWeight:500}}>
+                {passwordErrors.map((err,i) => <li key={i}>{err}</li>)}
+              </ul>
+            )}
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="password2" style={{fontWeight:500,marginBottom:2}}>Conferma password</label>
-            <input id="password2" type="password" placeholder="Ripeti password" value={password2} onChange={e => setPassword2(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outlineColor:'#0984e3',background:'#fff',color:'#222'}} />
+            <input id="password2" type="password" placeholder="Ripeti password" value={password2} onChange={e => handlePassword2Change(e.target.value)} required style={{padding:'0.7em',borderRadius:6,border:'1px solid #dfe6e9',outline:'none',background:'#fff',color:'#222'}} onFocus={e=>e.target.style.border='1px solid #0984e3'} onBlur={e=>e.target.style.border='1px solid #dfe6e9'} />
+            {password2 && password2Error && (
+              <div style={{color:'#d63031',margin:'6px 0 0 0',fontSize:'0.98em',fontWeight:500}}>{password2Error}</div>
+            )}
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
             <label htmlFor="ruolo" style={{fontWeight:500,marginBottom:2}}>Ruolo</label>
