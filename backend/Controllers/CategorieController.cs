@@ -21,7 +21,9 @@ namespace backend.Controllers
         [AllowAnonymous] // opzionale: se vuoi che sia pubblica
         public async Task<IActionResult> GetCategorie()
         {
-            var categorie = await _context.CategorieAcquisto.ToListAsync();
+            var categorie = await _context.CategorieAcquisto
+                .Select(c => new { c.CategoriaId, c.Descrizione })
+                .ToListAsync();
             return Ok(categorie);
         }
 
@@ -37,7 +39,7 @@ namespace backend.Controllers
                 return BadRequest(new { message = "Categoria già esistente" });
             _context.CategorieAcquisto.Add(dto);
             await _context.SaveChangesAsync();
-            return Ok(dto);
+            return Ok(new { dto.CategoriaId, dto.Descrizione });
         }
 
         // PUT /api/categorie/{id}
@@ -52,7 +54,7 @@ namespace backend.Controllers
                 return BadRequest(new { message = "Descrizione obbligatoria" });
             categoria.Descrizione = dto.Descrizione;
             await _context.SaveChangesAsync();
-            return Ok(categoria);
+            return Ok(new { categoria.CategoriaId, categoria.Descrizione });
         }
 
         // DELETE /api/categorie/{id}
